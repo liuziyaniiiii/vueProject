@@ -11,15 +11,23 @@ export default
             component:Home
         },
         {
-            path:'/search',
-            component:Search
+            name:'search',//是当前路由的标识名称
+            path:'/search/:keyword?',
+            component:Search,
+            props:route =>({keyword3:route.params.keyword,keyword4:route.query.keyword2})
         },
         {
             path:'/register',
-            component:Register
+            component:Register,
+            meta:{
+                isHideFooter:true
+            }
         },
         {
             path:'/login',
-            component:Login
+            component:Login,
+            meta:{
+                isHideFooter:true
+            }
         },
     ]
