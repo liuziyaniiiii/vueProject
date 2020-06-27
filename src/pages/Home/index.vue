@@ -1,10 +1,24 @@
 <template>
-  <div>Home</div>
+  <div>
+    <!-- Home -->
+    <TypeNav/>
+    <ListContainer/>
+    <TodayRecommend/>
+    <Rank/>
+  </div>
 </template>
 
 <script>
+import ListContainer from './ListContainer/ListContainer'
+import TodayRecommend from './TodayRecommend/TodayRecommend'
+import Rank from './Rank/Rank'
 export default {
-    name:'Home'
+    name:'Home',
+    components:{
+      ListContainer,
+      TodayRecommend,
+      Rank,
+    }
 }
 </script>
 
