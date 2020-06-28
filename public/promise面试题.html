@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 面试题1*/
+        // const promise = new Promise((resolve, reject) => {
+        //     console.log(1);
+        //     resolve();
+        //     console.log(2);
+        // })
+
+        // promise.then(() => {
+        //     console.log(3);
+        // })
+
+        // console.log(4); //1,2,4,3
+
+        /*面试题2*/
+        // const promise = new Promise((resolve, reject) => {
+        //     resolve('success1');
+        //     reject('error');
+        //     resolve('success2');
+        // });
+
+        // promise.then((res) => {
+        //     console.log('then:', res);
+        // }).catch((err) => {
+        //     console.log('catch:', err);
+        // })   //then:success1 Promise状态只能改变一次,剩下的调用也会被忽略
+
+
+        /*面试题3*/
+        // Promise.resolve(1)
+        //     .then(2)
+        //     .then(Promise.resolve(3))
+        //     .then(console.log)  //1   Promise.resolve传递的参数是一个原始值,就会把Promise的状态改为resolved,
+        // 同时.then接收的是函数为参数,如果原始值为参数,则then(null),会导致前一个Promise结果会穿透下面
+
+        /*面试题4*/
+
+        /*function red() {
+            console.log('red');
+        }
+
+        function green() {
+            console.log('green');
+        }
+
+        function yellow() {
+            console.log('yellow');
+        }
+
+        var light = function (timmer, cb) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    cb();
+                    resolve();
+                }, timmer);
+            });
+        };
+
+        var step = function () {
+            Promise.resolve().then(function () {
+                return light(3000, red);
+            }).then(function () {
+                return light(2000, green);
+            }).then(function () {
+                return light(1000, yellow);
+            }).then(function () {
+                step();
+            });
+        }
+
+        step();*/
+
+
+        /*面试题5*/
+
+        /* const first = () => (new Promise((resolve, reject) => {
+             console.log(3);
+             let p = new Promise((resolve, reject) => {
+                 console.log(7);
+                 setTimeout(() => {
+                     console.log(5);
+                     resolve(6);
+                 }, 0)
+                 resolve(1);
+             });
+             resolve(2);
+             p.then((arg) => {
+                 console.log(arg);
+             });
+
+         }));
+
+         first().then((arg) => {
+             console.log(arg);
+         });
+         console.log(4); //3,7,4,1,2,5 */
+
+        /*面试题6*/
+        /* const timeout = ms => new Promise((resolve, reject) => {
+             setTimeout(() => {
+                 resolve();
+             }, ms);
+         });
+
+         const ajax1 = () => timeout(2000).then(() => {
+             console.log('1');
+             return 1;
+         });
+
+         const ajax2 = () => timeout(1000).then(() => {
+             console.log('2');
+             return 2;
+         });
+
+         const ajax3 = () => timeout(2000).then(() => {
+             console.log('3');
+             return 3;
+         });
+
+         const mergePromise = ajaxArray => {
+             // 在这里实现你的代码
+             // 保存数组中的函数执行后的结果
+             var data = [];
+
+             // Promise.resolve方法调用时不带参数，直接返回一个resolved状态的 Promise 对象。
+             var sequence = Promise.resolve();
+
+             ajaxArray.forEach(function (item) {
+                 // 第一次的 then 方法用来执行数组中的每个函数，
+                 // 第二次的 then 方法接受数组中的函数执行后返回的结果，
+                 // 并把结果添加到 data 中，然后把 data 返回。
+                 // 这里对 sequence 的重新赋值，其实是相当于延长了 Promise 链
+                 sequence = sequence.then(item).then(function (res) {
+                     data.push(res);
+                     return data;
+                 });
+             })
+
+             // 遍历结束后，返回一个 Promise，也就是 sequence， 他的 [[PromiseValue]] 值就是 data，
+             // 而 data（保存数组中的函数执行后的结果） 也会作为参数，传入下次调用的 then 方法中。
+             return sequence;
+
+
+         };
+
+         mergePromise([ajax1, ajax2, ajax3]).then(data => {
+             console.log('done');
+             console.log(data); // data 为 [1, 2, 3]
+         });*/
+
+        // 要求分别输出
+        // 1
+        // 2
+        // 3
+        // done
+        // [1, 2, 3]
+
+
+
+
+        /*let p = new Promise((resolve,reject) => {
+            reject('fail');
+        })
+        p.then(() => {
+            
+        },err => {
+            console.log(err);		//fail
+        });*/
+
+
+        /*let p = new Promise((resolve,reject) => {
+            resolve('success')
+        });
+        let p2 = new Promise((resolve,reject) => {
+            resolve('success2')
+        })
+        p.then(value => {
+            return p2;				//p2的成功态将作为下一次then的状态
+        }).then(value => {
+            console.log(value)
+        })*/
+
+        /*let p1 = new Promise((resolve,reject) => {
+            resolve('success');
+        });
+        p1.then(value => {
+            throw 'a new error';
+        }).catch(e => {
+            console.log(e);		//a new error
+        }).then(() => {
+            console.log('after a catch the chain is restored');
+        })*/
+
+
+        /*let p1 = new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve('p1')
+            },0)
+        });
+        let p2 = new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve('p2')
+            },0)
+        });
+        let promise = Promise.all([p1,p2]).then(value => {
+            console.log(value);		//['p1','p2']
+        })*/
+
+        /*let p1 = new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve('p1')
+            },1000)
+        });
+        let p2 = new Promise((resolve,reject) => {
+            setTimeout(() => {
+                reject('p2')
+            },0)
+        });
+        Promise.race([p1,p2]).then((value) => {
+            console.log(value)
+        },(err) => {
+            console.log(err);		//p2
+        })*/
+
+
+        // 等待状态
+        /*const promise1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('success')
+            }, 1000)
+        })
+        const promise2 = promise1.then(() => {
+            return 'an error'
+        })
+
+        console.log('promise1', promise1)
+        console.log('promise2', promise2)
+
+        setTimeout(() => {
+            console.log('promise1', promise1)
+            console.log('promise2', promise2)
+        }, 2000)*/
+
+
+        // 状态改变
+        /*const promise = new Promise((resolve, reject) => {
+            resolve('success1')
+            reject('error')
+            resolve('success2')
+        })
+        promise.then((res) => {
+            console.log('then: ', res)
+        })
+        .catch((err) => {
+            console.log('catch: ', err)
+        })*/ //then: success
+
+
+        // 链式调用1
+        /*Promise.resolve(1)
+            .then((res) => {
+                console.log(res)
+                return 2
+            })
+            .catch((err) => {
+                return 3
+            })
+            .then((res) => {
+                console.log(res)
+            })*/ //1,2
+
+
+        // 链式调用2
+        /* const promise = new Promise((resolve, reject) => {
+             setTimeout(() => {
+                 console.log('executor')
+                 resolve('success')
+             }, 1000)
+         })
+
+         const start = Date.now()
+         promise.then((res) => {
+             console.log(res, Date.now() - start)
+         })
+         promise.then((res) => {
+             console.log(res, Date.now() - start)
+         })*/ //ls后 executor, success 1001 , success 1001
+        //Promise的构造函数只执行一次，并且立即执行；promise的then方法可以被多次调用，每次都返回新的promise实例。
+
+
+        // 链式调用3
+        /*const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.log('executor')
+                resolve('success')
+            }, 1000)
+        })
+        const promise2 = promise.then(res => {
+            console.log(res);
+        })
+        promise2.then(res => {
+            console.log(res)
+        })*/ // executor success undefined
+
+
+        // 错误捕获1
+        /*Promise.resolve()
+            .then(() => {
+                return new Error('error!!!')
+            })
+            .then((res) => {
+                console.log('then: ', res)
+            })
+            .catch((err) => {
+                console.log('catch: ', err)
+            })*/ // then: Error:error!!!
+
+
+        // 错误捕获2
+        /*Promise.resolve()
+            .then(() => {
+                throw new Error('error');		//return Promise.reject('error')
+            })
+            .then((res) => {
+                console.log('then: ', res)
+            })
+            .catch((err) => {
+                console.log('catch: ', err)
+            })*/ // catch: Error :error
+
+        // 穿透
+        Promise.resolve(1)
+            .then(2)
+            .then(Promise.resolve(3))
+            .then(console.log) //1
+
+        // 事件环
+        /*process.nextTick(() => {
+            console.log('nextTick')
+        })
+        Promise.resolve()
+            .then(() => {
+                console.log('then')
+            })
+        setImmediate(() => {
+            console.log('setImmediate')
+        })
+        console.log('end')*/
+    </script>
+</body>
+
+</html>
